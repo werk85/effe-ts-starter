@@ -1,0 +1,32 @@
+{
+  "Page": {
+    "prefix": "Page",
+    "body": [
+      "import { Union } from 'ts-union'",
+      "import { stater, platform } from 'effe-ts'",
+      "import React from 'react'",
+      "",
+      "export const Action = Union({})",
+      "export type Action = typeof Action.T",
+      "",
+      "export interface Model {}",
+      "",
+      "export interface Env {}",
+      "",
+      "export type State<R extends Env> = stater.StateR<R, Model, Action>",
+      "",
+      "export function init<R extends Env>(): State<R> {",
+      "  return stater.of({})",
+      "}",
+      "",
+      "export function update<R extends Env>(action: Action): (model: Model) => State<R> {",
+      "  return stater.of",
+      "}",
+      "",
+      "export function view(dispatch: platform.Dispatch<Action>): (model: Model) => JSX.Element {",
+      "  return model => <>Page</>",
+      "}"
+    ],
+    "description": "Default effe-ts Page"
+  }
+}
