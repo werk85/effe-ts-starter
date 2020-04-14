@@ -11,6 +11,7 @@ import { Navigation } from './components'
 export const Action = Union({
   Home: of<pages.Home.Action>(),
   Links: of<pages.Links.Action>(),
+  NewPage: of<pages.NewPage.Action>(),
   Navigate: of<Route>()
 })
 export type Action = typeof Action.T
@@ -18,6 +19,7 @@ export type Action = typeof Action.T
 export const Model = Union({
   Home: of<pages.Home.Model>(),
   Links: of<pages.Links.Model>(),
+  NewPage: of<pages.NewPage.Model>(),
   Redirect: of<{}>()
 })
 export type Model = typeof Model.T
@@ -43,6 +45,7 @@ export function changeRoute(route: Route): StateHandler {
     Route.match(route, {
       Home: () => pipe(pages.Home.init<Env>(), state.bimap(Action.Home, Model.Home)),
       Links: () => pipe(pages.Links.init<Env>(), state.bimap(Action.Links, Model.Links)),
+      NewPage: () => pipe(pages.NewPage.init<Env>(), state.bimap(Action.NewPage, Model.NewPage)),
       NotFound: () => pipe(pages.Home.init<Env>(), state.bimap(Action.Home, Model.Home))
     })
 }
@@ -59,10 +62,15 @@ export function updateLinksPage(action: pages.Links.Action): StateHandler {
   return ifModel(Model.if.Links, flow(pages.Links.update(action), state.bimap(Action.Links, Model.Links)))
 }
 
+export function updateNewPage(action: pages.NewPage.Action): StateHandler {
+  return ifModel(Model.if.NewPage, flow(pages.NewPage.update(action), state.bimap(Action.NewPage, Model.NewPage)))
+}
+
 export function update(action: Action): StateHandler {
   return Action.match(action, {
     Home: updateHomePage,
     Links: updateLinksPage,
+    NewPage: updateNewPage,
     Navigate: changeRoute
   })
 }
@@ -70,7 +78,7 @@ export function update(action: Action): StateHandler {
 export function withLayout(children: Html): Html {
   return dispatch => (
     <>
-      <Navigation home={toHref(Route.Home({}))} links={toHref(Route.Links({}))} />
+      <Navigation home={toHref(Route.Home({}))} links={toHref(Route.Links({}))} newPage={toHref(Route.NewPage({}))} />
       <Container>{children(dispatch)}</Container>
     </>
   )
@@ -78,11 +86,13 @@ export function withLayout(children: Html): Html {
 
 export const homeView = flow(pages.Home.view, html.map(Action.Home), withLayout)
 export const linksView = flow(pages.Links.view, html.map(Action.Links), withLayout)
+export const newPageView = flow(pages.NewPage.view, html.map(Action.NewPage), withLayout)
 
 export function view(model: Model): Html {
   return Model.match(model, {
     Home: homeView,
     Links: linksView,
+    NewPage: newPageView,
     Redirect: () => () => <></>
   })
 }
