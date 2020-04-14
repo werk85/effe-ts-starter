@@ -4,6 +4,7 @@ import { Container, Navbar, Nav } from 'react-bootstrap'
 export interface NavigationProps {
   home: string
   links: string
+  newPage: string
 }
 
 export const Navigation: React.FC<NavigationProps> = props => (
@@ -15,6 +16,7 @@ export const Navigation: React.FC<NavigationProps> = props => (
         <Nav className="mr-auto" activeKey={location.hash}>
           <Nav.Link href={props.home}>Home</Nav.Link>
           <Nav.Link href={props.links}>Link</Nav.Link>
+          <Nav.Link href={props.newPage}>New Page</Nav.Link>
         </Nav>
       </Navbar.Collapse>
     </Container>
