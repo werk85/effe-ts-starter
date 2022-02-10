@@ -54,7 +54,7 @@
     "jest": "25.3.0",
     "monocle-ts": "2.1.0",
     "newtype-ts": "0.3.4",
-    "node-sass": "4.13.1",
+    "node-sass": "7.0.0",
     "react": "16.13.1",
     "react-bootstrap": "1.0.0",
     "react-dom": "16.13.1",
